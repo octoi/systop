@@ -1,8 +1,8 @@
 {
     "name": "sys-top",
-    "productName": "SYS TOP",
+    "productName": "SysTop",
     "version": "1.0.0",
-    "description": "Monitor your system",
+    "description": "Monitor your system CPU",
     "main": "main.js",
     "scripts": {
         "start": "electron .",

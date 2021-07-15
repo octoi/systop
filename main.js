@@ -2,14 +2,14 @@ const { app, BrowserWindow, Menu } = require('electron')
 
 process.env.NODE_ENV = 'development'
 
-const isDev = process.env.NODE_ENV === 'production';
+const isDev = process.env.NODE_ENV === 'development';
 const isMac = process.platform === 'darwin';
 
-let mainWindow
+let mainWindow;
 
 function createMainWindow() {
     mainWindow = new BrowserWindow({
-        title: 'APP NAME',
+        title: 'SysTop',
         width: isDev ? 800 : 500,
         height: 600,
         icon: `${__dirname}/assets/icons/icon.png`,
