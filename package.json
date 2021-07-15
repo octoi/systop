@@ -14,11 +14,11 @@
     "keywords": [
         "Electron"
     ],
-    "author": "Brad Traversy",
+    "author": "fadhilsaheer",
     "license": "MIT",
     "devDependencies": {
-        "electron": "^9.0.0",
-        "electron-packager": "^14.2.1",
-        "nodemon": "^2.0.3"
+        "electron": "^13.1.6",
+        "electron-packager": "^15.2.0",
+        "nodemon": "^2.0.12"
     }
 }
