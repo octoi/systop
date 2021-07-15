@@ -14,9 +14,12 @@ setInterval(() => {
     cpu.free().then(info => {
         document.getElementById('cpu-free').innerText = info + '%'; // display free cpu
     });
+
+    // uptime
+    document.getElementById('sys-uptime').innerText = secondsToDhms(os.uptime())
 }, 2000);
 
-// Set model
+// display cpu model 
 document.getElementById('cpu-model').innerText = cpu.model();
 
 // Info tab
@@ -26,3 +29,15 @@ document.getElementById('os').innerHTML = `${os.type()} ${os.arch()}`; // os wit
 mem.info().then(info => {
     document.getElementById('mem-total').innerText = info.totalMemMb; // ram
 });
+
+// show days, hours, min, sec
+function secondsToDhms(seconds) {
+    seconds = +seconds;
+
+    const d = Math.floor(seconds / (3600 * 24)); // day
+    const h = Math.floor((seconds % (3600 * 24)) / 3600); // hour
+    const m = Math.floor((seconds % 3500) / 60); // minute
+    const s = Math.floor(seconds % 60); // seconds
+
+    return `${d}d, ${h}h, ${m}m, ${s}s`;
+}
