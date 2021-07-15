@@ -16,11 +16,12 @@ function createMainWindow() {
         resizable: isDev ? true : false,
         webPreferences: {
             nodeIntegration: true,
+            contextIsolation: false,
         },
     })
 
     if (isDev) {
-        mainWindow.webContents.openDevTools()
+        // mainWindow.webContents.openDevTools()
     }
 
     mainWindow.loadFile('./app/index.html')
