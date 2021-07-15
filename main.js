@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu } = require('electron')
+const { app, BrowserWindow, Menu, ipcMain } = require('electron')
 const Store = require('./Store');
 
 process.env.NODE_ENV = 'development'
@@ -69,6 +69,12 @@ const menu = [
         ]
         : []),
 ]
+
+// set settings
+ipcMain.on('settings:set', (_, value) => {
+    store.set('settings', value);
+    mainWindow.webContents.send('settings:get', store.get('settings'));
+});
 
 app.on('window-all-closed', () => {
     if (!isMac) {
