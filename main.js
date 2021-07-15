@@ -10,11 +10,10 @@ let mainWindow;
 function createMainWindow() {
     mainWindow = new BrowserWindow({
         title: 'SysTop',
-        width: isDev ? 800 : 500,
+        width: isDev ? 800 : 355,
         height: 600,
         icon: `${__dirname}/assets/icons/icon.png`,
         resizable: isDev ? true : false,
-        backgroundColor: 'white',
         webPreferences: {
             nodeIntegration: true,
         },
