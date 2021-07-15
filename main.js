@@ -28,6 +28,7 @@ function createMainWindow() {
         height: 600,
         icon: `${__dirname}/assets/icons/icon.png`,
         resizable: isDev,
+        show: false,
         opacity: 0.9,
         webPreferences: {
             nodeIntegration: true,
@@ -92,6 +93,15 @@ const menu = [
     ...(isMac ? [{ role: 'appMenu' }] : []),
     {
         role: 'fileMenu',
+    },
+    {
+        label: 'View',
+        submenu: [
+            {
+                label: 'Toggle Navigation',
+                click: () => mainWindow.webContents.send('nav:toggle'),
+            }
+        ]
     },
     ...(isDev
         ? [

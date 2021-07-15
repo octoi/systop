@@ -1,10 +1,12 @@
 const settingsForm = document.getElementById('settings-form');
+const nav = document.getElementById('nav');
 
 // get settings
 ipcRenderer.on('settings:get', (_, settings) => {
     document.getElementById('cpu-overload').value = settings.cpuOverload;
     document.getElementById('alert-frequency').value = settings.alertFrequency;
 });
+
 
 // submit settings
 settingsForm.addEventListener('submit', event => {
@@ -29,3 +31,8 @@ function showAlert(msg) {
         alert.classList.add('hide');
     }, 3000)
 }
+
+// nav toggle
+ipcRenderer.on('nav:toggle', () => {
+    nav.classList.toggle('hide');
+});
