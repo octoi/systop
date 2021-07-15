@@ -5,10 +5,15 @@ const os = osu.os;
 const cpu = osu.cpu;
 const mem = osu.mem;
 
+let cpuOverload = 10;
+
 // Run every 2 second
 setInterval(() => {
     cpu.usage().then(info => {
         document.getElementById('cpu-usage').innerText = info + '%'; // cpu usage
+
+        document.getElementById('cpu-progress').style.width = info + '%'; // display progress
+        document.getElementById('cpu-progress').style.background = info > cpuOverload ? 'red' : '#30c88b'; // change color of progress
     });
 
     cpu.free().then(info => {
