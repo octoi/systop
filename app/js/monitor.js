@@ -5,6 +5,17 @@ const os = osu.os;
 const cpu = osu.cpu;
 const mem = osu.mem;
 
+// Run every 2 second
+setInterval(() => {
+    cpu.usage().then(info => {
+        document.getElementById('cpu-usage').innerText = info + '%'; // cpu usage
+    });
+
+    cpu.free().then(info => {
+        document.getElementById('cpu-free').innerText = info + '%'; // display free cpu
+    });
+}, 2000);
+
 // Set model
 document.getElementById('cpu-model').innerText = cpu.model();
 
