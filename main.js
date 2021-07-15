@@ -1,12 +1,16 @@
 const { app, BrowserWindow, Menu, ipcMain } = require('electron')
+const path = require('path');
+const MainWindow = require('./MainWindow');
+const AppTray = require('./AppTray');
 const Store = require('./Store');
 
-process.env.NODE_ENV = 'development'
+// process.env.NODE_ENV = 'development'
 
 const isDev = process.env.NODE_ENV === 'development';
 const isMac = process.platform === 'darwin';
 
 let mainWindow;
+let tray;
 
 // init store & default
 const store = new Store({
@@ -20,24 +24,9 @@ const store = new Store({
 });
 
 function createMainWindow() {
-    mainWindow = new BrowserWindow({
-        title: 'SysTop',
-        width: isDev ? 800 : 355,
-        height: 600,
-        icon: `${__dirname}/assets/icons/icon.png`,
-        resizable: isDev ? true : false,
-        webPreferences: {
-            nodeIntegration: true,
-            contextIsolation: false,
-        },
-    })
-
-    if (isDev) {
-        mainWindow.webContents.openDevTools()
-    }
-
-    mainWindow.loadFile('./app/index.html')
+    mainWindow = new MainWindow({ file: './app/index.html', isDev });
 }
+
 
 app.on('ready', () => {
     createMainWindow()
@@ -47,13 +36,35 @@ app.on('ready', () => {
     });
 
     const mainMenu = Menu.buildFromTemplate(menu)
-    Menu.setApplicationMenu(mainMenu)
+    Menu.setApplicationMenu(mainMenu);
+
+    mainWindow.on('close', e => {
+        if (!app.isQuitting) {
+            e.preventDefault();
+            mainWindow.hide();
+        }
+
+        return true;
+    })
+
+    const icon = path.join(__dirname, 'assets', 'icons', 'tray_icon.png');
+    tray = new AppTray(icon, mainWindow);
+
 })
 
 const menu = [
     ...(isMac ? [{ role: 'appMenu' }] : []),
     {
         role: 'fileMenu',
+    },
+    {
+        label: 'View',
+        submenu: [
+            {
+                label: 'Toggle Navigation',
+                click: () => mainWindow.webContents.send('nav:toggle'),
+            }
+        ]
     },
     ...(isDev
         ? [
