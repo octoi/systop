@@ -28,7 +28,6 @@ function createMainWindow() {
         height: 600,
         icon: `${__dirname}/assets/icons/icon.png`,
         resizable: isDev,
-        show: false,
         opacity: 0.9,
         webPreferences: {
             nodeIntegration: true,
@@ -51,6 +50,18 @@ app.on('ready', () => {
         mainWindow.webContents.send('settings:get', store.get('settings'));
     });
 
+    const mainMenu = Menu.buildFromTemplate(menu)
+    Menu.setApplicationMenu(mainMenu);
+
+    mainWindow.on('close', e => {
+        if (!app.isQuitting) {
+            e.preventDefault();
+            mainWindow.hide();
+        }
+
+        return true;
+    })
+
     const icon = path.join(__dirname, 'assets', 'icons', 'tray_icon.png');
     tray = new Tray(icon);
 
@@ -58,13 +69,23 @@ app.on('ready', () => {
         if (mainWindow.isVisible()) {
             mainWindow.hide()
         } else {
-            console.log("show")
             mainWindow.show();
         }
     });
 
-    const mainMenu = Menu.buildFromTemplate(menu)
-    Menu.setApplicationMenu(mainMenu)
+
+    tray.on('right-click', () => {
+        const contextMenu = Menu.buildFromTemplate([{
+            label: 'Quit',
+            click: () => {
+                app.isQuitting = true;
+                app.quit();
+            }
+        }])
+        tray.popUpContextMenu(contextMenu);
+    });
+
+
 })
 
 const menu = [
